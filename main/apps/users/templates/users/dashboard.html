@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class='container'>
+            <div class="header">
+                <h2>Test App</h2>
+                {% if logged_user_level == 1 %}<a href="/dashboard">Dashboard</a>{% endif %}{% if logged_user_level == 9 %}<a href="/dashboard/admin">Dashboard</a>{% endif %}
+                <a href="/users/edit">Profile</a>
+                <a href="/logoff">Log Off</a>
+            </div>
+            <h1>All Users</h1>
+            <table class="table table-bordered">
+                <thead>
+                    <th>ID</th>
+                    <th>Name^</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                    <th>User Level</th>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                       <td>{{ user.id }}</td>
+                       <td><a href="/users/show/{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</a></td>
+                       <td>{{ user.email }}</td>
+                       <td>{{ user.created_at }}</td>
+                       <td>{% if user.user_level == 1 %}normal{% endif %}{% if user.user_level == 9 %}admin{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

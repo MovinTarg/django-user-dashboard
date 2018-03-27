@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ user.first_name }}'s Profile</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class='container'>
+            <div class="header">
+                <h2>Test App</h2>
+                {% if logged_user_level == 1 %}<a href="/dashboard">Dashboard</a>{% endif %}{% if logged_user_level == 9 %}<a href="/dashboard/admin">Dashboard</a>{% endif %}
+                <a href="/users/edit">Profile</a>
+                <a href="/logoff">Log Off</a>
+            </div>
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+            <p>Registered at: {{ user.created_at }}</p>
+            <p>User ID: #{{ user.id }}</p>
+            <p>Email Address: {{ user.email }}</p>
+            <p>Description: {{ user.description }}</p>
+            <h1>Leave a message for {{ user.first_name }}</h1>
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="content">
+                <form action='/users/message/{{ user.id }}', method='POST'>
+                    {% csrf_token %}
+                    <input type="textarea" name='message_input' class="message_box">
+                    <input type="submit" value="Post a message" class="message_btn">
+                </form>
+                <div class="message_board">
+                    {% for message in wall_messages %}
+                    <h4><a href="/users/show/{{ message.messager.id }}">{{ message.messager.first_name }} </a> wrote    - {{ message.created_at }}</h4>
+                    <p>{{ message.message }}</p>
+                    {% for comment in comments %}
+                    {% if comment.message.id == message.id %}
+                    <h4 class="comment"><a href="/users/show/{{ comment.commenter.id }}">{{ comment.commenter.first_name }}</a> wrote    - {{ comment.created_at }}</h4>
+                    <p class="comment">{{ comment.comment }}</p>
+                    {% endif %}
+                    {% endfor %}
+                    <h3>Post a comment</h3>
+                    <form action='/users/comment/{{ user.id }}/{{ message.id }}', method='POST'>
+                        {% csrf_token %}
+                        <input type="textarea" name='comment_input' class="comment_box">
+                        <input type="submit" value="Post a comment" class="comment_btn">
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

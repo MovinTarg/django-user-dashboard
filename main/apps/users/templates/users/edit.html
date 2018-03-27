@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Edit Your Profile</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class='container'>
+            <div class="header">
+                <h2>Test App</h2>
+                {% if logged_user_level == 1 %}<a href="/dashboard">Dashboard</a>{% endif %}{% if logged_user_level == 9 %}<a href="/dashboard/admin">Dashboard</a>{% endif %}
+                <a href="/users/edit">Profile</a>
+                <a href="/logoff">Log Off</a>
+            </div>
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+            <h2>Edit Information</h2>
+            <form action="/users/update_info/{{ user.id }}" method="POST">
+                {% csrf_token %}
+                <label for="email">Email:
+                    <input type="text" name="email" value="{{ user.email }}" placeholder="{{ user.email }}">
+                </label>
+                <label for="first_name">First Name:
+                    <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="{{ user.first_name }}">
+                </label>
+                <label for="last_name">Last Name:
+                    <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="{{ user.last_name }}">
+                </label>
+                <input type="submit" value="Save">
+            </form>
+            <h2>Change Password</h2>
+            <form action="/users/update_password/{{ user.id }}" method="POST">
+                {% csrf_token %}
+                <label for="password">Password:
+                    <input type="password" name="password">
+                </label>
+                <label for="confirm_password">Confirm Password:
+                    <input type="password" name="confirm_password">
+                </label>
+                <br>
+                <input type="submit" value="Update Password">
+            </form>
+            <h2>Edit Discription</h2>
+            <form action="/users/description/{{ user.id }}" method="POST">
+                {% csrf_token %}
+                <label for="description">
+                    <input type="text" name="description">
+                </label>
+                <br>
+                <input type="submit" value="Save">
+            </form>
+        </div>
+    </body>
+</html>

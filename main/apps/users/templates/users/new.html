@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Add a new user</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class='container'>
+            <div class="header">
+                <a href="/dashboard/admin">Dashboard</a>
+                <a href="/users/edit">Profile</a>
+                <a href="/logoff">Log Off</a>
+            </div>
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+            <h2>Add a new user</h2>
+            <a href="/dashboard/admin">Return to Dashboard</a>
+            <form action="/new" method="POST">
+                {% csrf_token %}
+                <label for="email">Email:
+                    <input type="text" name="email">
+                </label>
+                <label for="first_name">First Name:
+                    <input type="text" name="first_name">
+                </label>
+                <label for="last_name">Last Name:
+                    <input type="text" name="last_name">
+                </label>
+                <br>
+                <label for="password">Password:
+                    <input type="password" name="password">
+                </label>
+                <label for="confirm_password">Confirm Password:
+                    <input type="password" name="confirm_password">
+                </label>
+                <br>
+                <input type="submit" value="Create">
+            </form>
+        </div>
+    </body>
+</html>
